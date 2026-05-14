@@ -67,7 +67,25 @@ def growth(v25, v26):
         return "➡️ 0.0%", "gray"
 
 # ====================== 页面 ======================
-st.title("🍙 粽子销售看板")
+from PIL import Image
+import io
+import base64
+
+img = Image.open("panda_zongzi.png").convert("RGBA")
+# 核心：放大到 60×60，高清不模糊
+img = img.resize((60, 60), Image.Resampling.LANCZOS)
+
+buf = io.BytesIO()
+img.save(buf, format="PNG")
+img_b64 = base64.b64encode(buf.getvalue()).decode()
+
+st.markdown(f"""
+<div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+    <img src="data:image/png;base64,{img_b64}" width="60" height="60">
+    <h1 style="margin:0; font-size: 42px;">粽子销售看板</h1>
+</div>
+""", unsafe_allow_html=True)
+
 st.divider()
 
 # ---------------------- 1. 酒店粽子销售排行 ----------------------
